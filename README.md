@@ -19,11 +19,6 @@
 
 Proyek ini mencakup alur kerja e-commerce lengkap, mulai dari etalase produk hingga panel admin yang komprehensif untuk manajemen toko.
 
-<p align="center">
-  <img src="https://i.imgur.com/G5YV28t.png" alt="Kana Tojong Homepage Screenshot" width="80%">
-</p>
-
----
 
 ## ✨ Fitur Utama
 
