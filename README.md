@@ -95,7 +95,7 @@ Untuk menjalankan proyek ini di lingkungan lokal Anda, ikuti langkah-langkah ber
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=kanatojong_db
+    DB_DATABASE=kanatojeng_db
     DB_USERNAME=root
     DB_PASSWORD=
     ```
