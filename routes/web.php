@@ -1,74 +1,82 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\ShopController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
-// Halaman Home (root url '/')
-Route::get('/', [PageController::class, 'home'])->name('home');
+// Import semua controller yang dibutuhkan
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProfileController;
 
-// Halaman About
+// Import semua controller Admin
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SettingController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// == HALAMAN PUBLIK ==
+Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 
-// Halaman Kontak <-- TAMBAHKAN BAGIAN INI
+// Halaman Kontak
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-
-// Halaman Shop
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+// Toko & Produk
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index'); // <-- FIX: Nama diubah di sini
 Route::get('/shop/{product}', [ShopController::class, 'show'])->name('shop.show');
 
-// Halaman Dashboard bawaan Breeze, kita biarkan dulu
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route untuk profil
+// == ROUTE UNTUK PENGGUNA TERAUTENTIKASI ==
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware('verified')->name('dashboard');
+
+    // Profil, Keranjang, Checkout
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Route untuk Keranjang Belanja
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index'); // <-- Route untuk menampilkan keranjang
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    Route::delete('/cart/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy'); // <-- Route untuk hapus item
+    Route::patch('/cart/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
 
-    // Route untuk Checkout
     Route::post('/checkout/whatsapp', [CheckoutController::class, 'processToWhatsApp'])->name('checkout.whatsapp');
 });
 
-// GRUP ROUTE UNTUK ADMIN PANEL
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-    // Route untuk manajemen lainnya akan ditambahkan di sini
+// == GRUP ROUTE UNTUK PANEL ADMIN ==
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // CRUD
+    Route::resource('categories', CategoryController::class);
+    Route::resource('products', ProductController::class);
+
+    // Manajemen
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-    // Route untuk CRUD Kategori
-    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-    Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
-
-    // Route untuk Pesanan
-    Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
-    Route::get('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
-    Route::patch('orders/{order}/update-status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-
-    // Route untuk Pengguna
-    Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
-    Route::delete('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
-
-    // Route untuk Pengaturan
-    Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
-    Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
-});
-
+// Route Autentikasi Bawaan
 require __DIR__ . '/auth.php';

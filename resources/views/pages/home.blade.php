@@ -1,4 +1,9 @@
     <x-app-layout>
+
+        <x-slot name="title">Songkok Guru Takalar</x-slot>
+        <x-slot name="metaDescription">Temukan Songkok Guru Takalar dan Songkok Recca asli Bugis berkualitas tinggi. Pusat kerajinan songkok adat dengan nilai budaya.</x-slot>
+
+
         {{-- Hero Section --}}
         <div class="bg-white">
             <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
@@ -8,7 +13,7 @@
                     <p class="max-w-xl mt-5 mx-auto text-xl text-secondary">Mahakarya anyaman tangan dari serat pelepah lontar, simbol kehormatan dan tradisi.</p>
                     <div class="mt-8 flex justify-center">
                         <div class="inline-flex rounded-md shadow">
-                            <a href="{{ route('shop') }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-dark bg-primary-yellow hover:bg-gold hover:text-white transition-colors duration-300">
+                            <a href="{{ route('shop.index') }}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-dark bg-primary-yellow hover:bg-gold hover:text-white transition-colors duration-300">
                                 Lihat Semua Koleksi
                             </a>
                         </div>

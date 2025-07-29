@@ -85,6 +85,31 @@ class CartController extends Controller
         return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
+
+
+    public function update(Request $request, CartItem $cartItem)
+    {
+        // 1. Pastikan user hanya bisa mengupdate item miliknya sendiri
+        if ($cartItem->user_id !== Auth::id()) {
+            return back()->with('error', 'Aksi tidak diizinkan.');
+        }
+
+        // 2. Validasi input quantity
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        
+
+        // 3. Update quantity di database
+        $cartItem->update([
+            'quantity' => $request->quantity,
+        ]);
+
+        // 4. Redirect kembali dengan pesan sukses
+        return back()->with('success', 'Jumlah produk berhasil diperbarui.');
+    }
+
     /**
      * Menghapus item dari keranjang.
      */

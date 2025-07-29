@@ -16,10 +16,20 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        // 1. Ambil data pengguna yang sedang login
+        $user = $request->user();
+
+        // 2. Ambil riwayat pesanan milik pengguna tersebut
+        // Gunakan paginate untuk membagi per halaman jika pesanan banyak
+        $orders = $user->orders()->with('items')->latest()->paginate(5, ['*'], 'orders');
+
+        // 3. Kirim data ke view
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'orders' => $orders,
         ]);
     }
+
 
     /**
      * Update the user's profile information.

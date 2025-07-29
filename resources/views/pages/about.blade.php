@@ -1,4 +1,11 @@
 <x-app-layout>
+
+
+    <x-slot name="title">Tentang Kami</x-slot>
+    <x-slot name="metaDescription">Pelajari lebih lanjut tentang Kana Tojong, misi kami dalam melestarikan budaya Songkok Recca, dan komitmen kami pada kualitas dan pengrajin lokal.</x-slot>
+
+
+
     <div class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:text-center">

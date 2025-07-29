@@ -1,4 +1,13 @@
 <x-app-layout>
+
+
+    <x-slot name="title">Hubungi Kami</x-slot>
+    <x-slot name="metaDescription">Hubungi Kana Tojong untuk pertanyaan, pemesanan khusus, atau kolaborasi. Kami siap membantu Anda.</x-slot>
+
+
+
+
+
     <div class="bg-white">
         <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
             <div class="max-w-lg mx-auto md:max-w-none md:grid md:grid-cols-2 md:gap-8">
