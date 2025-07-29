@@ -15,7 +15,7 @@
                             <li><a href="{{ route('home') }}" class="text-base text-gray-500 hover:text-gray-900">Home</a></li>
                             <li><a href="#" class="text-base text-gray-500 hover:text-gray-900">Shop</a></li>
                             <li><a href="{{ route('about') }}" class="text-base text-gray-500 hover:text-gray-900">About</a></li>
-                            <li><a href="#" class="text-base text-gray-500 hover:text-gray-900">Contact</a></li>
+                            <li><a href="{{ route('contact.index') }}" class="text-base text-gray-500 hover:text-gray-900">Contact</a></li>
                         </ul>
                     </div>
                     <div class="mt-12 md:mt-0">

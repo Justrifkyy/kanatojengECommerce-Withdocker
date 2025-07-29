@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,11 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 
 // Halaman About
 Route::get('/about', [PageController::class, 'about'])->name('about');
+
+// Halaman Kontak <-- TAMBAHKAN BAGIAN INI
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 
 // Halaman Shop
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');

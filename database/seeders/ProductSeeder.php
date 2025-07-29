@@ -43,5 +43,27 @@ class ProductSeeder extends Seeder
             'price' => 2500000,
             'image_path' => 'product-images/default.jpg',
         ]);
+
+        Product::create([
+            'category_id' => $pamiring->id,
+            'name' => 'Songkok Recca Pamiring Emas',
+            'description' => 'Songkok Recca dengan hiasan benang emas di bagian pinggir (pamiring). Memberikan kesan mewah dan elegan.',
+            'material' => 'Serat Pelepah Lontar Pilihan',
+            'finishing' => 'Benang Emas 24 Karat',
+            'price' => 350000,
+            'image_path' => 'product-images/songkok-pamiring-emas.jpg', // Nama file contoh
+            'is_featured' => true, // <-- Tandai sebagai unggulan
+        ]);
+
+        Product::create([
+            'category_id' => $ulaweng->id,
+            'name' => 'Songkok Recca Ulaweng Bubbu',
+            'description' => 'Songkok Recca berlapis emas murni, simbol status dan kehormatan tertinggi dalam adat Bugis.',
+            'material' => 'Serat Lontar, Emas Murni',
+            'finishing' => 'Lapis Emas',
+            'price' => 2500000,
+            'image_path' => 'product-images/songkok-ulaweng-bubbu.jpg', // Nama file contoh
+            'is_featured' => true, // <-- Tandai sebagai unggulan
+        ]);
     }
 }
