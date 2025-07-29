@@ -138,9 +138,9 @@ Setelah instalasi berhasil, Anda bisa login menggunakan akun default yang dibuat
 | Peran | Email | Password |
 | :--- | :--- | :--- |
 | **Admin** | `admin@kanatojong.com` | `password` |
-| **User** | `user@gmail.com` | `password` |
+| **rifky** | `user@gmail.com` | `password` |
 
-> **Catatan:** Anda bisa mengakses Panel Admin melalui URL `/admin` setelah login sebagai Admin.
+> **Catatan:** Anda bisa mengakses Panel Admin melalui URL `/admin/dahsboard` setelah login sebagai Admin.
 
 ---
 
