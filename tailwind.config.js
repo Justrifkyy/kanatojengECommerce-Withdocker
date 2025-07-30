@@ -1,5 +1,6 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
-import forms from '@tailwindcss/forms';
+import defaultTheme from "tailwindcss/defaultTheme";
+import forms from "@tailwindcss/forms";
+import aspectRatio from "@tailwindcss/aspect-ratio"; // Import plugin aspect-ratio
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -11,20 +12,22 @@ export default {
 
     theme: {
         extend: {
-            // Menambahkan palet warna kustom kita
             colors: {
-                "primary-yellow": "#FFD700", // Kuning biasa yang cerah (mirip emas muda)
-                gold: "#B8860B", // Kuning emas yang lebih gelap dan elegan
-                dark: "#333333", // Abu-abu sangat gelap untuk teks utama
-                secondary: "#6B7280", // Abu-abu untuk teks sekunder
-                background: "#F9F9F7", // Warna off-white/krem untuk latar belakang
+                // Palet Warna Final untuk Kana Tojong
+                "bright-yellow": "#FFD700", // Kuning Terang untuk semua tombol utama
+                "dark-gold": "#B88E2F", // Kuning Gelap untuk BG Hero & Aksen
+                primary: "#B88E2F", // Menjaga 'primary' sebagai warna aksen utama
+                secondary: "#333333", // Warna teks utama (gelap)
+                light: "#666666", // Warna teks sekunder (abu-abu)
+                background: "#FFFFFF", // Latar belakang putih bersih
+                surface: "#FFF3E3", // Warna krem/beige untuk kartu
+                danger: "#E97171", // Warna untuk diskon atau error
             },
-            // Mengatur Poppins sebagai font default
             fontFamily: {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],
             },
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, aspectRatio], // Pastikan plugin aspect-ratio aktif
 };
