@@ -6,7 +6,7 @@
     <section class="relative h-[80vh] bg-cover bg-center" style="background-image: url('{{ asset('storage/images/Background_home.png') }}');">
         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center items-center text-center text-white">
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+            <h1 class="text-yellow-500 text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
                 Warisan Budaya dalam Setiap Anyaman
             </h1>
             <p class="mt-6 max-w-2xl text-lg text-gray-200">
@@ -19,8 +19,8 @@
     </section>
 
     <!-- KEUNGGULAN KAMI SECTION -->
-    <section class="py-20 bg-background">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section x-data="{ show: false }" x-intersect.once="show = true" class="py-20 bg-background">
+        <div :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'" class="transition-all duration-700 ease-out max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
                 <!-- Keunggulan 1 -->
                 <div class="flex flex-col items-center">
@@ -51,20 +51,22 @@
     </section>
 
     <!-- PRODUK UNGGULAN SECTION -->
-    <section class="bg-white py-20">
-        <div class="text-center">
-            <h2 class="text-3xl font-bold text-secondary">Produk Unggulan Kami</h2>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-            @if($featuredProducts->isNotEmpty())
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    @foreach ($featuredProducts as $product)
-                        <x-product-card :product="$product" />
-                    @endforeach
-                </div>
-            @else
-                <p class="text-center text-light">Produk unggulan akan segera hadir.</p>
-            @endif
+    <section x-data="{ show: false }" x-intersect.once="show = true" class="bg-white py-20">
+        <div :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'" class="transition-all duration-700 ease-out max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-secondary">Produk Unggulan Kami</h2>
+            </div>
+            <div class="mt-12">
+                @if($featuredProducts->isNotEmpty())
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        @foreach ($featuredProducts as $product)
+                            <x-product-card :product="$product" />
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-center text-light">Produk unggulan akan segera hadir.</p>
+                @endif
+            </div>
             <div class="text-center mt-16">
                 <a href="{{ route('shop.index') }}" class="bg-transparent text-primary font-semibold py-3 px-16 border-2 border-primary rounded-full hover:bg-primary hover:text-white transition-colors duration-300">
                     Lihat Semua Produk
@@ -74,8 +76,8 @@
     </section>
     
     <!-- MITRA KAMI SECTION -->
-    <section class="py-20 bg-surface">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section x-data="{ show: false }" x-intersect.once="show = true" class="py-20 bg-surface">
+        <div :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'" class="transition-all duration-700 ease-out max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-3xl font-bold text-secondary">Dipercaya oleh Mitra</h2>
                 <p class="mt-2 text-light">Kami bangga dapat berkolaborasi dengan berbagai pihak untuk melestarikan budaya.</p>

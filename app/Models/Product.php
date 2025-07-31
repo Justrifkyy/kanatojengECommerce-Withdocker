@@ -16,8 +16,12 @@ class Product extends Model
         'material',
         'finishing',
         'price',
-        'image_path',
     ];
+
+    public function media()
+    {
+        return $this->hasMany(ProductMedia::class);
+    }
 
     // Relasi: Satu produk milik satu kategori
     public function category()

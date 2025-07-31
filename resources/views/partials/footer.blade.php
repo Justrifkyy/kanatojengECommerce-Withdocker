@@ -23,8 +23,6 @@
                 <div>
                     <h3 class="font-medium text-light">Bantuan</h3>
                     <ul class="mt-4 space-y-2">
-                        <li><a href="#" class="text-secondary font-medium hover:text-primary">Opsi Pembayaran</a></li>
-                        <li><a href="#" class="text-secondary font-medium hover:text-primary">Pengembalian</a></li>
                         <li><a href="#" class="text-secondary font-medium hover:text-primary">Kebijakan Privasi</a></li>
                     </ul>
                 </div>

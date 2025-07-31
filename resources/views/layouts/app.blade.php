@@ -5,44 +5,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ isset($title) ? $title . ' - ' : '' }}Kana Tojeng</title>
-
+        {{-- Judul Halaman Dinamis --}}
+        <title>{{ isset($title) ? $title . ' - ' : '' }}Kana Tojong</title>
+        
+        {{-- Meta Deskripsi Dinamis dengan Nilai Default --}}
         <meta name="description" content="{{ $metaDescription ?? 'Jual Songkok Recca Asli Bugis. Temukan berbagai jenis songkok adat berkualitas tinggi, dibuat oleh pengrajin ahli dari Bone. Warisan budaya dalam setiap anyaman.' }}">
 
+        <!-- Impor Font Poppins dari Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- Inisialisasi data awal untuk Alpine Store dari server-side --}}
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('app').cartCount = {{ \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') ?? 0 }};
+            })
+        </script>
     </head>
     <body class="font-sans antialiased bg-background">
         <div class="min-h-screen">
             
-            {{-- Memasukkan Header --}}
             @include('partials.header')
 
-            {{-- Notifikasi Flash Message --}}
-        @if (session('success'))
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <span class="block sm:inline">{{ session('success') }}</span>
-            </div>
-        </div>
-    @endif
-    @if (session('error'))
-         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <span class="block sm:inline">{{ session('error') }}</span>
-            </div>
-        </div>
-    @endif
-
+            <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
 
-            {{-- Memasukkan Footer --}}
             @include('partials.footer')
         </div>
+
+        {{-- Memanggil komponen Toast Notification --}}
+        <x-toast />
     </body>
 </html>

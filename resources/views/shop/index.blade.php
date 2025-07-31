@@ -9,69 +9,56 @@
         </div>
     </section>
 
-    <!-- Konten Utama -->
+    <!-- Filter dan Konten Utama -->
     <div class="bg-background">
         <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-            <div class="lg:grid lg:grid-cols-4 lg:gap-x-8">
-                <!-- Sidebar Filter (Kolom Kiri) -->
-                <aside class="hidden lg:block p-4 rounded-lg">
-                    <h3 class="sr-only">Filters</h3>
-                    <div class="space-y-10">
-                        <div>
-                            <h4 class="text-lg font-bold text-secondary border-b border-gray-200 pb-2 mb-4">Kategori</h4>
-                            <ul class="space-y-2">
-                                <li>
-                                    <a href="{{ route('shop.index', ['sort' => request('sort')]) }}" 
-                                       class="block px-3 py-2 rounded-md text-base transition-colors duration-200 {{ !request('category') ? 'bg-surface text-primary font-semibold shadow-sm' : 'text-light hover:text-primary' }}">
-                                        Semua Kategori
-                                    </a>
-                                </li>
-                                @foreach ($categories as $category)
-                                <li>
-                                    <a href="{{ route('shop.index', ['category' => $category->id, 'sort' => request('sort')]) }}" 
-                                       class="block px-3 py-2 rounded-md text-base transition-colors duration-200 {{ request('category') == $category->id ? 'bg-surface text-primary font-semibold shadow-sm' : 'text-light hover:text-primary' }}">
-                                        {{ $category->name }}
-                                    </a>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
+            <!-- Baris Filter dan Urutkan -->
+            <div class="bg-surface p-4 rounded-lg mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <span class="font-semibold text-secondary">Filter:</span>
+                    <div class="flex items-center space-x-2">
+                        <!-- Filter Kategori -->
+                        @foreach ($categories as $category)
+                            <a href="{{ route('shop.index', ['category' => $category->id, 'sort' => request('sort')]) }}" 
+                               class="px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 {{ request('category') == $category->id ? 'bg-primary text-white shadow-sm' : 'bg-white text-light hover:bg-gray-100' }}">
+                                {{ $category->name }}
+                            </a>
+                        @endforeach
+                         <a href="{{ route('shop.index', ['sort' => request('sort')]) }}" 
+                               class="px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 {{ !request('category') ? 'bg-primary text-white shadow-sm' : 'bg-white text-light hover:bg-gray-100' }}">
+                                Semua
+                            </a>
                     </div>
-                </aside>
+                </div>
+                
+                <!-- Form untuk Urutkan -->
+                <form method="GET" action="{{ route('shop.index') }}" class="flex items-center space-x-2">
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                    <label for="sort" class="text-sm font-medium text-secondary">Urutkan:</label>
+                    <select name="sort" id="sort" onchange="this.form.submit()" class="text-sm rounded-md border-gray-300 shadow-sm focus:ring-primary focus:border-primary transition">
+                        <option value="latest" @selected(request('sort') == 'latest' || !request('sort'))>Terbaru</option>
+                        <option value="price_asc" @selected(request('sort') == 'price_asc')>Harga Terendah</option>
+                        <option value="price_desc" @selected(request('sort') == 'price_desc')>Harga Tertinggi</option>
+                    </select>
+                </form>
+            </div>
 
-                <!-- Daftar Produk (Kolom Kanan) -->
-                <main class="lg:col-span-3">
-                    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-8">
-                        <p class="text-sm text-light">
-                            Menampilkan {{ $products->firstItem() }}-{{ $products->lastItem() }} dari {{ $products->total() }} hasil
-                        </p>
-                        <form method="GET" action="{{ route('shop.index') }}">
-                            <input type="hidden" name="category" value="{{ request('category') }}">
-                            {{-- Menambahkan rounded-md pada dropdown --}}
-                            <select name="sort" onchange="this.form.submit()" class="text-sm rounded-md border-gray-300 shadow-sm focus:ring-primary focus:border-primary transition">
-                                <option value="latest" @selected(request('sort') == 'latest' || !request('sort'))>Urutkan: Terbaru</option>
-                                <option value="price_asc" @selected(request('sort') == 'price_asc')>Urutkan: Harga Terendah</option>
-                                <option value="price_desc" @selected(request('sort') == 'price_desc')>Urutkan: Harga Tertinggi</option>
-                            </select>
-                        </form>
-                    </div>
+            <!-- Grid Produk -->
+            @if($products->count() > 0)
+                <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                    @foreach ($products as $product)
+                        <x-product-card :product="$product" />
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-16">
+                    <p class="text-lg text-light">Tidak ada produk yang ditemukan.</p>
+                </div>
+            @endif
 
-                    @if($products->count() > 0)
-                        <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                            @foreach ($products as $product)
-                                <x-product-card :product="$product" />
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="text-center py-16">
-                            <p class="text-lg text-light">Tidak ada produk yang ditemukan.</p>
-                        </div>
-                    @endif
-
-                    <div class="mt-12">
-                        {{ $products->links() }}
-                    </div>
-                </main>
+            <!-- Paginasi -->
+            <div class="mt-16">
+                {{ $products->links() }}
             </div>
         </div>
     </div>

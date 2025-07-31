@@ -27,4 +27,4 @@
                 $table->dropColumn('is_featured');
             });
         }
-    };
+};
