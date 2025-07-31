@@ -1,6 +1,6 @@
 <aside class="w-64 bg-gray-800 text-white flex-shrink-0">
     <div class="p-6">
-        <a href="{{ route('admin.dashboard') }}" class="text-2xl font-bold">Admin Kana Tojong</a>
+        <a href="{{ route('admin.dashboard') }}" class="text-2xl font-bold">Admin Kana Tojeng</a>
     </div>
     <nav class="mt-6">
         <a href="{{ route('admin.dashboard') }}" class="block py-2.5 px-6 text-gray-300 hover:bg-gray-700 hover:text-white">Dashboard</a>

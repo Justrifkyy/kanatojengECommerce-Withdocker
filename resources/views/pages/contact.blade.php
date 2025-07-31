@@ -30,7 +30,7 @@
                         </div>
                         <div>
                             <h3 class="text-xl font-semibold text-secondary">Alamat</h3>
-                            <p class="mt-1 text-light">Jl. Perintis Kemerdekaan KM. 9, Makassar, Sulawesi Selatan, Indonesia</p>
+                            <p class="mt-1 text-light">Desa Bontokassi, Kecamatan Galesong Selatan, Kabupaten Takalar, Sulawesi Selatan</p>
                         </div>
                     </div>
                     <!-- Telepon -->
@@ -40,8 +40,7 @@
                         </div>
                         <div>
                             <h3 class="text-xl font-semibold text-secondary">Telepon</h3>
-                            <p class="mt-1 text-light">Mobile: (+62) 812-3456-7890</p>
-                            <p class="mt-1 text-light">Hotline: (+62) 898-7654-3210</p>
+                            <p class="mt-1 text-light">Mobile: (+62) 851-4647-8100</p>
                         </div>
                     </div>
                     <!-- Jam Kerja -->
@@ -51,8 +50,8 @@
                         </div>
                         <div>
                             <h3 class="text-xl font-semibold text-secondary">Jam Kerja</h3>
-                            <p class="mt-1 text-light">Senin - Jumat: 09:00 - 17:00</p>
-                            <p class="mt-1 text-light">Sabtu & Minggu: 09:00 - 13:00</p>
+                            <p class="mt-1 text-light">Senin - Jumat: 09:00 - 20:00</p>
+                            <p class="mt-1 text-light">Sabtu & Minggu: 09:00 - 18:00</p>
                         </div>
                     </div>
                 </div>

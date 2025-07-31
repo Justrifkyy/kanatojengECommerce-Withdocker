@@ -6,7 +6,7 @@
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
                     <img class="h-12 w-auto" src="{{ asset('storage/images/logo.png') }}" alt="Kana Tojong Logo">
-                    <span class="text-2xl font-bold text-secondary hidden sm:inline">Kana Tojong</span>
+                    <span class="text-2xl font-bold text-secondary hidden sm:inline">Kana Tojeng</span>
                 </a>
             </div>
 

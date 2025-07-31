@@ -32,13 +32,13 @@
             <div class="md:col-span-4">
                 <h3 class="font-medium text-light">Newsletter</h3>
                 <form class="mt-4 flex space-x-2">
-                    <input type="email" placeholder="Masukkan Email Anda" class="w-full border-b-2 border-gray-300 focus:border-primary focus:ring-0 p-0">
+                    <input type="email" placeholder="Masukkan Email Anda" class="w-full rounded-md border-b-2 border-gray-300 focus:border-primary focus:ring-0 p-0">
                     <button type="submit" class="font-medium text-secondary border-b-2 border-secondary hover:text-primary hover:border-primary">SUBSCRIBE</button>
                 </form>
             </div>
         </div>
         <div class="mt-8 border-t border-gray-200 pt-8">
-            <p class="text-secondary text-sm">2025 Fikom UMI. All rights reserved</p>
+            <p class="text-secondary text-sm">2025 Kana Tojeng. All rights reserved</p>
         </div>
     </div>
 </footer>
