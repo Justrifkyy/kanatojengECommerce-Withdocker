@@ -18,6 +18,7 @@
         <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
             <div x-data="{ 
                     selectedSize: null, 
+                    selectedColor: null, // State untuk warna
                     quantity: 1,
                     mainMediaUrl: '{{ $product->media->first() ? asset('storage/' . $product->media->first()->file_path) : 'https://placehold.co/800x800/f3f4f6/333333?text=Produk' }}',
                     mainMediaType: '{{ $product->media->first()->media_type ?? 'image' }}',
@@ -25,6 +26,11 @@
                     addToCart() {
                         if (!this.selectedSize) {
                             $store.app.showToast('Silakan pilih ukuran terlebih dahulu.', 'error');
+                            return;
+                        }
+                        // Validasi warna jika produk punya pilihan warna
+                        if ({{ $product->colors->isNotEmpty() ? 'true' : 'false' }} && !this.selectedColor) {
+                            $store.app.showToast('Silakan pilih warna terlebih dahulu.', 'error');
                             return;
                         }
                         this.isLoading = true;
@@ -106,13 +112,12 @@
 
                         <!-- Ukuran -->
                         <div>
-                            <p class="text-sm text-light">Size</p>
+                            <p class="text-sm font-medium text-secondary">Size</p>
                             <fieldset class="mt-2">
-                                <legend class="sr-only">Choose a size</legend>
                                 <div class="flex items-center space-x-3">
                                     @forelse ($product->sizes->sortBy('size_number') as $size)
                                         <label @click="selectedSize = {{ $size->id }}"
-                                               :class="{ 'bg-primary text-white': selectedSize == {{ $size->id }}, 'bg-surface text-secondary': selectedSize != {{ $size->id }} }"
+                                               :class="{ 'bg-primary text-white ring-2 ring-primary': selectedSize == {{ $size->id }}, 'bg-surface text-secondary': selectedSize != {{ $size->id }} }"
                                                class="w-12 h-12 flex items-center justify-center rounded-md cursor-pointer font-semibold transition-colors">
                                             <input type="radio" name="size_id" value="{{ $size->id }}" class="sr-only" x-model.number="selectedSize">
                                             <span>{{ $size->size_number }}</span>
@@ -124,6 +129,26 @@
                             </fieldset>
                         </div>
                         
+                        <!-- Pilihan Warna -->
+                        @if($product->colors->isNotEmpty())
+                        <div class="mt-8">
+                            <p class="text-sm font-medium text-secondary">Pilihan Warna</p>
+                            <fieldset class="mt-2">
+                                <div class="flex items-center flex-wrap gap-3">
+                                    @foreach ($product->colors as $color)
+                                        <label @click="selectedColor = {{ $color->id }}"
+                                               :class="{ 'ring-2 ring-primary': selectedColor == {{ $color->id }} }"
+                                               class="relative rounded-full flex items-center justify-center cursor-pointer p-0.5 focus:outline-none">
+                                            <input type="radio" name="color_id" value="{{ $color->id }}" class="sr-only" x-model.number="selectedColor">
+                                            <span class="sr-only">{{ $color->name }}</span>
+                                            <span style="background-color: {{ $color->hex_code }}" class="h-8 w-8 border border-black border-opacity-10 rounded-full"></span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </fieldset>
+                        </div>
+                        @endif
+                        
                         <!-- Aksi (Jumlah & Tombol) -->
                         <div class="mt-8 flex items-center space-x-4">
                             <!-- Penghitung Jumlah -->
@@ -134,8 +159,8 @@
                             </div>
                             <!-- Tombol Add to Cart -->
                             <button type="submit"
-                                    :disabled="!selectedSize || isLoading"
-                                    :class="{ 'opacity-50 cursor-not-allowed': !selectedSize || isLoading }"
+                                    :disabled="!selectedSize || ({{ $product->colors->isNotEmpty() ? '!selectedColor' : 'false' }}) || isLoading"
+                                    :class="{ 'opacity-50 cursor-not-allowed': !selectedSize || ({{ $product->colors->isNotEmpty() ? '!selectedColor' : 'false' }}) || isLoading }"
                                     class="flex-1 bg-transparent text-primary font-semibold py-3 px-8 border-2 border-primary rounded-md hover:bg-primary hover:text-white transition-colors flex items-center justify-center">
                                 <span x-show="!isLoading">Add To Cart</span>
                                 <span x-show="isLoading">

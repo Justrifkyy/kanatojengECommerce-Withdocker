@@ -2,7 +2,8 @@
 
 <div class="group relative bg-gray-50 shadow-sm rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-xl">
     <div class="aspect-w-1 aspect-h-1 w-full bg-gray-200">
-        <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : 'https://placehold.co/400x400/f3f4f6/333333?text=Produk' }}"
+        {{-- FIX: Mengambil gambar pertama dari relasi media --}}
+        <img src="{{ $product->media->first() ? asset('storage/' . $product->media->first()->file_path) : 'https://placehold.co/400x400/f3f4f6/333333?text=Produk' }}"
              alt="{{ $product->name }}"
              class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
         
@@ -12,9 +13,6 @@
                 Lihat Detail
             </a>
         </div>
-        
-        {{-- Label Diskon (jika ada) --}}
-        {{-- <div class="absolute top-4 right-4 bg-danger text-white text-xs font-bold px-3 py-1 rounded-full">-30%</div> --}}
     </div>
     <div class="p-4 text-center">
         <h3 class="text-lg font-semibold text-secondary">
@@ -27,8 +25,6 @@
             <p class="text-base font-bold text-secondary">
                 Rp{{ number_format($product->price, 0, ',', '.') }}
             </p>
-            {{-- Harga Coret (jika ada diskon) --}}
-            {{-- <p class="text-sm text-light line-through">Rp3.500.000</p> --}}
         </div>
     </div>
 </div>

@@ -6,17 +6,15 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $this->call([
             UserSeeder::class,
-            SizeSeeder::class, // Panggil seeder data master dulu
+            SizeSeeder::class,
+            ColorSeeder::class, // Panggil seeder warna
             ProductCategorySeeder::class,
-            ProductSeeder::class, // Baru panggil seeder yang bergantung pada data master
-            ProductVariantSeeder::class,
+            ProductSeeder::class, // Seeder produk yang sudah diupdate
+            // ProductVariantSeeder tidak perlu dipanggil lagi karena sudah ditangani di dalam ProductSeeder
         ]);
     }
 }

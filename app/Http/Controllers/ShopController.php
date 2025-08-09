@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Cache;
 
 class ShopController extends Controller
 {
@@ -13,18 +14,20 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-        // 1. Ambil semua kategori untuk ditampilkan di sidebar filter
-        $categories = ProductCategory::orderBy('name', 'asc')->get();
+        // 2. Gunakan Cache::remember untuk mengambil daftar kategori
+        $categories = Cache::remember('all_categories', now()->addHours(6), function () {
+            // Blok kode ini hanya akan dijalankan jika 'all_categories' tidak ada di cache.
+            // Setelah dijalankan, hasilnya akan disimpan di cache selama 6 jam.
+            return ProductCategory::orderBy('name', 'asc')->get();
+        });
 
-        // 2. Mulai query dasar untuk produk
+        // ... sisa logika untuk query produk tidak berubah ...
         $productsQuery = Product::with('category');
 
-        // 3. Terapkan filter berdasarkan kategori jika ada permintaan
         if ($request->filled('category')) {
             $productsQuery->where('category_id', $request->category);
         }
 
-        // 4. Terapkan pengurutan produk
         if ($request->filled('sort')) {
             if ($request->sort == 'price_asc') {
                 $productsQuery->orderBy('price', 'asc');
@@ -32,15 +35,11 @@ class ShopController extends Controller
                 $productsQuery->orderBy('price', 'desc');
             }
         } else {
-            // Jika tidak ada permintaan sort, urutkan berdasarkan yang terbaru
             $productsQuery->latest();
         }
 
-        // 5. Eksekusi query dan ambil hasilnya dengan paginasi
-        // withQueryString() memastikan parameter filter/sort tetap ada saat pindah halaman
         $products = $productsQuery->paginate(9)->withQueryString();
 
-        // 6. Kirim semua data yang dibutuhkan ke view
         return view('shop.index', [
             'products' => $products,
             'categories' => $categories
@@ -53,7 +52,9 @@ class ShopController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load('category', 'sizes');
+        // Memuat semua relasi yang dibutuhkan: kategori, ukuran, media, dan WARNA
+        $product->load('category', 'sizes', 'media', 'colors');
+
         return view('shop.show', [
             'product' => $product
         ]);
