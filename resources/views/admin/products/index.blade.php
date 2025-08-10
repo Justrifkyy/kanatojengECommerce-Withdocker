@@ -22,7 +22,13 @@
                     @forelse ($products as $product)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : 'https://via.placeholder.com/150' }}" alt="{{ $product->name }}" class="w-16 h-16 object-cover rounded">
+                                {{-- FIX: Mengambil gambar pertama dari relasi media --}}
+                                @php
+                                    $thumbnail = $product->media->first();
+                                @endphp
+                                <img src="{{ $thumbnail ? asset('storage/' . $thumbnail->file_path) : 'https://placehold.co/150x150/e0e0e0/333?text=No+Image' }}" 
+                                     alt="{{ $product->name }}" 
+                                     class="w-16 h-16 object-cover rounded">
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $product->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $product->category->name }}</td>
