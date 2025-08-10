@@ -22,18 +22,21 @@ use App\Http\Controllers\Admin\SettingController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
+|
+| PENTING: Jika Anda menambahkan atau mengubah rute dan tidak melihat
+| perubahannya, jalankan perintah 'php artisan optimize:clear'
+| di terminal Anda untuk membersihkan cache rute.
+|
 */
 
 // == HALAMAN PUBLIK ==
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
-
-// Halaman Kontak
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Toko & Produk
-Route::get('/shop', [ShopController::class, 'index'])->name('shop.index'); // <-- FIX: Nama diubah di sini
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index'); // Disesuaikan untuk konsistensi
 Route::get('/shop/{product}', [ShopController::class, 'show'])->name('shop.show');
 
 

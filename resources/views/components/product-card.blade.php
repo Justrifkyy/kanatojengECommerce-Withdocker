@@ -2,9 +2,16 @@
 
 <div class="group relative bg-gray-50 shadow-sm rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-xl">
     <div class="aspect-w-1 aspect-h-1 w-full bg-gray-200">
-        {{-- FIX: Mengambil gambar pertama dari relasi media --}}
-        <img src="{{ $product->media->first() ? asset('storage/' . $product->media->first()->file_path) : 'https://placehold.co/400x400/f3f4f6/333333?text=Produk' }}"
+        @php
+            // Ambil path gambar pertama dari media
+            $imagePath = $product->media->first() ? $product->media->first()->file_path : null;
+        @endphp
+        
+        {{-- FIX: Memanggil gambar secara langsung menggunakan asset() --}}
+        <img src="{{ $imagePath ? asset('storage/' . $imagePath) : 'https://placehold.co/400x400/f3f4f6/333333?text=Produk' }}"
              alt="{{ $product->name }}"
+             loading="lazy"
+             decoding="async"
              class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
         
         <!-- Overlay Aksi -->
