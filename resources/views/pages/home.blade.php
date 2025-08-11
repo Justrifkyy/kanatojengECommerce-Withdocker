@@ -70,16 +70,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-            <div class="flex flex-col items-center animate-bounce">
-                <span class="text-white/60 text-sm mb-2 font-light">Scroll untuk melihat lebih banyak</span>
-                <div class="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center">
-                    <div class="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- KEUNGGULAN KAMI SECTION -->
@@ -223,13 +213,13 @@
     </section>
     
     <!-- MITRA KAMI SECTION -->
-    <section x-data="{ show: false }" x-intersect.once="show = true" class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 relative overflow-hidden">
+    <section x-data="{ show: false }" x-intersect.once="show = true" class="py-24 bg-gradient-to-br from-amber-900 via-amber-800 to-amber-600 relative overflow-hidden">
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,transparent_50%)]"></div>
         
         <div :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'" class="relative transition-all duration-1000 ease-out max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
             
             <div class="text-center mb-20">
-                <div class="inline-flex items-center px-6 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 border border-white/20">
+                <div class="inline-flex items-center px-6 py-2 backdrop-blur-sm rounded-full mb-6 border">
                     <span class="text-amber-300 text-sm font-semibold tracking-wide">JARINGAN KEMITRAAN</span>
                 </div>
                 <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6">
@@ -283,13 +273,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="text-center mt-16">
-                <div class="inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    <span class="text-white font-medium">Tertarik menjadi mitra? </span>
-                    <a href="#" class="ml-2 text-amber-300 hover:text-amber-200 font-semibold transition-colors">
-                        Hubungi Kami →
-                    </a>
                 </div>
             </div>
         </div>
