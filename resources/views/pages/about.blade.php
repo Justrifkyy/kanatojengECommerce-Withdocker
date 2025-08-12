@@ -45,9 +45,6 @@
                     <span class="text-amber-400 font-semibold">penjaga warisan</span> 
                     yang menghubungkan masa lalu dengan masa depan.
                 </p>
-                
-                <!-- Scroll indicator -->
-
                 </div>
             </div>
         </div>
