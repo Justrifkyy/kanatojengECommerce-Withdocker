@@ -54,8 +54,8 @@
                 </h1>
                 
                 <p class="max-w-3xl mx-auto text-xl lg:text-2xl text-gray-200 leading-relaxed font-light">
-                    Kana Tojong mempersembahkan <span class="font-semibold text-amber-300">Songkok Recca</span>, 
-                    mahakarya kerajinan tangan yang melambangkan kehormatan dan tradisi Bugis yang telah diwariskan turun-temurun.
+                    Kana Tojeng mempersembahkan <span class="font-semibold text-amber-300">Songkok Guru</span>, 
+                    mahakarya kerajinan tangan yang melambangkan kehormatan dan tradisi Takalar yang telah diwariskan turun-temurun.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-6 justify-center items-center pt-6">
@@ -103,10 +103,6 @@
                         <p class="text-slate-600 text-lg leading-relaxed">Dibuat dari serat pelepah lontar pilihan yang diproses secara teliti dengan standar kualitas tinggi untuk hasil terbaik dan tahan lama.</p>
                         
                         <div class="mt-6 flex items-center text-amber-600 font-medium">
-                            <span class="text-sm">Pelajari lebih lanjut</span>
-                            <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
                         </div>
                     </div>
                 </div>
@@ -124,10 +120,6 @@
                         <p class="text-slate-600 text-lg leading-relaxed">Setiap songkok adalah karya seni unik yang dianyam dengan penuh kesabaran dan keahlian oleh pengrajin berpengalaman puluhan tahun.</p>
                         
                         <div class="mt-6 flex items-center text-amber-600 font-medium">
-                            <span class="text-sm">Pelajari lebih lanjut</span>
-                            <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
                         </div>
                     </div>
                 </div>
@@ -145,10 +137,6 @@
                         <p class="text-slate-600 text-lg leading-relaxed">Lebih dari sekadar penutup kepala, songkok adalah identitas, prestise, dan kebanggaan budaya yang mencerminkan nilai-nilai luhur.</p>
                         
                         <div class="mt-6 flex items-center text-amber-600 font-medium">
-                            <span class="text-sm">Pelajari lebih lanjut</span>
-                            <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
                         </div>
                     </div>
                 </div>
