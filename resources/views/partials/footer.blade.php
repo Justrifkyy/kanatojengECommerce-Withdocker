@@ -13,7 +13,7 @@
             <div class="md:col-span-5 lg:col-span-4 space-y-6 group">
                 <div class="transform transition-all duration-500 group-hover:scale-105">
                     <h2 class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-amber-400 via-amber-400 to-amber-400 bg-clip-text text-transparent mb-4">
-                        Kana Tojong
+                        Kana Tojeng
                     </h2>
                     <div class="w-16 h-1 bg-gradient-to-r from-amber-400 to-amber-400 rounded-full transform origin-left transition-transform duration-700 group-hover:scale-x-150"></div>
                 </div>
@@ -163,7 +163,7 @@
 {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Kana Tojong",
+    "name": "Kana Tojeng",
     "url": "{{ url('/') }}",
     "address": {
         "@type": "PostalAddress",

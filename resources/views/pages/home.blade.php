@@ -5,7 +5,7 @@
     <!-- Enhanced SEO Meta Tags -->
     <x-slot name="head">
         <meta name="keywords" content="songkok takalar, songkok recca, songkok bugis, kerajinan tangan sulawesi, budaya bugis, songkok tradisional, songkok premium">
-        <meta property="og:title" content="Songkok Guru Takalar Premium - Warisan Budaya Bugis | Kana Tojong">
+        <meta property="og:title" content="Songkok Guru Takalar Premium - Warisan Budaya Bugis | Kana Tojeng">
         <meta property="og:description" content="Koleksi songkok tradisional Bugis berkualitas premium. Kerajinan tangan asli dari Takalar, Sulawesi Selatan.">
         <meta property="og:image" content="{{ asset('storage/images/Background_home.png') }}">
         <meta property="og:type" content="website">
