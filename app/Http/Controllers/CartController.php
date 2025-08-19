@@ -52,11 +52,13 @@ class CartController extends Controller
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'size_id' => 'required|exists:sizes,id',
-        ], [
-            'size_id.required' => 'Anda harus memilih ukuran terlebih dahulu.' // Custom error message
+            'quantity' => 'required|integer|min:1',
         ]);
 
         if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
+            }
             return back()->withErrors($validator)->withInput();
         }
 
@@ -65,24 +67,82 @@ class CartController extends Controller
             ->first();
 
         if (!$variant) {
-            return back()->with('error', 'Varian produk tidak ditemukan.');
+            return response()->json(['success' => false, 'message' => 'Varian produk tidak ditemukan.'], 404);
         }
 
+        // == BARIS YANG HILANG ADA DI SINI ==
+        // Cek dulu apakah item sudah ada di keranjang
         $cartItem = CartItem::where('user_id', Auth::id())
             ->where('variant_id', $variant->id)
             ->first();
 
         if ($cartItem) {
-            $cartItem->increment('quantity');
+            // Jika sudah ada, tambahkan quantity-nya
+            $cartItem->increment('quantity', $request->quantity);
         } else {
+            // Jika belum ada, buat item baru
             CartItem::create([
                 'user_id' => Auth::id(),
                 'variant_id' => $variant->id,
-                'quantity' => 1,
+                'quantity' => $request->quantity,
+            ]);
+        }
+
+        $newCartCount = CartItem::where('user_id', Auth::id())->sum('quantity');
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Produk berhasil ditambahkan!',
+                'cartCount' => $newCartCount,
             ]);
         }
 
         return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+    }
+
+
+
+    public function update(Request $request, CartItem $cartItem)
+    {
+        // Pastikan user hanya bisa mengupdate item miliknya sendiri
+        if ($cartItem->user_id !== Auth::id()) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Aksi tidak diizinkan.'], 403);
+            }
+            return back()->with('error', 'Aksi tidak diizinkan.');
+        }
+
+        $request->validate(['quantity' => 'required|integer|min:1']);
+
+        // Update quantity di database
+        $cartItem->update(['quantity' => $request->quantity]);
+
+        // Hitung ulang data terbaru untuk dikirim kembali sebagai respons
+        $user = Auth::user();
+        $totalPrice = CartItem::where('user_id', $user->id)
+            ->get()
+            ->sum(function ($item) {
+                // Pastikan relasi ada untuk menghindari error
+                if ($item->variant && $item->variant->product) {
+                    return $item->quantity * $item->variant->product->price;
+                }
+                return 0;
+            });
+        $newCartCount = CartItem::where('user_id', $user->id)->sum('quantity');
+
+        // Jika ini adalah request AJAX, kirim respons JSON
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Keranjang berhasil diperbarui!',
+                'totalPriceFormatted' => 'Rp' . number_format($totalPrice, 0, ',', '.'),
+                'cartCount' => $newCartCount,
+            ]);
+        }
+
+        // Fallback untuk non-AJAX
+        return back()->with('success', 'Jumlah produk berhasil diperbarui.');
     }
 
     /**

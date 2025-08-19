@@ -9,6 +9,11 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'category_id',
         'name',
@@ -16,24 +21,37 @@ class Product extends Model
         'material',
         'finishing',
         'price',
-        'image_path',
+        'is_featured', // <-- FIX: Tambahkan 'is_featured' di sini
     ];
 
-    // Relasi: Satu produk milik satu kategori
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_featured' => 'boolean', // <-- Tambahan: Pastikan nilainya selalu boolean (true/false)
+    ];
+
+    // ... relasi lainnya (category, sizes, media, colors) ...
+
     public function category()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 
-    // Relasi: Satu produk punya banyak varian (kombinasi dengan ukuran)
-    public function variants()
-    {
-        return $this->hasMany(ProductVariant::class);
-    }
-
-    // Relasi: Satu produk tersedia dalam banyak ukuran (melalui tabel variants)
     public function sizes()
     {
         return $this->belongsToMany(Size::class, 'product_variants');
+    }
+
+    public function media()
+    {
+        return $this->hasMany(ProductMedia::class);
+    }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class);
     }
 }

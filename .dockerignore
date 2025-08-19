@@ -1,0 +1,23 @@
+# Abaikan folder dependensi. Ini akan di-install di dalam container.
+/vendor/
+/node_modules/
+
+# Abaikan file environment lokal. Ini akan dibuat di dalam container.
+.env
+
+# Abaikan file git
+.git
+.gitignore
+
+# PENTING: Abaikan symbolic link storage di folder public
+/public/storage
+
+# Abaikan file log Laravel
+/storage/logs
+/storage/framework/sessions/*
+/storage/framework/cache/data/*
+/storage/framework/views/*
+
+# Abaikan file debug
+npm-debug.log
+yarn-error.log
