@@ -6,10 +6,10 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- Judul Halaman Dinamis --}}
-        <title>{{ isset($title) ? $title . ' - ' : '' }}Kana Tojong</title>
+        <title>{{ isset($title) ? $title . ' - ' : '' }}Kana Tojeng</title>
         
         {{-- Meta Deskripsi Dinamis dengan Nilai Default --}}
-        <meta name="description" content="{{ $metaDescription ?? 'Jual Songkok Recca Asli Bugis. Temukan berbagai jenis songkok adat berkualitas tinggi, dibuat oleh pengrajin ahli dari Bone. Warisan budaya dalam setiap anyaman.' }}">
+        <meta name="description" content="{{ $metaDescription ?? 'Jual Songkok Guru Asli Bugis. Temukan berbagai jenis songkok adat berkualitas tinggi, dibuat oleh pengrajin ahli dari Bone. Warisan budaya dalam setiap anyaman.' }}">
 
         <!-- Impor Font Poppins dari Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">

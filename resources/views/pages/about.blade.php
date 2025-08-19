@@ -1,6 +1,6 @@
 <x-app-layout>
-    <x-slot name="title">Tentang Kami - Kana Tojong | Songkok Recca Berkualitas Tinggi</x-slot>
-    <x-slot name="metaDescription">Temukan kisah inspiratif di balik Kana Tojong. Pelajari dedikasi kami dalam melestarikan warisan budaya Songkok Recca dan memberdayakan para pengrajin ahli dari Bone, Sulawesi Selatan. Setiap produk adalah mahakarya yang diciptakan dengan penuh makna.</x-slot>
+    <x-slot name="title">Tentang Kami - Kana Tojong | Songkok Guru Berkualitas Tinggi</x-slot>
+    <x-slot name="metaDescription">Temukan kisah inspiratif di balik Kana Tojong. Pelajari dedikasi kami dalam melestarikan warisan budaya Songkok Guru dan memberdayakan para pengrajin ahli dari Bone, Sulawesi Selatan. Setiap produk adalah mahakarya yang diciptakan dengan penuh makna.</x-slot>
 
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
@@ -8,10 +8,10 @@
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Kana Tojong",
-        "description": "Pelestar warisan budaya Songkok Recca dan pemberdaya pengrajin Bugis",
+        "description": "Pelestar warisan budaya Songkok Guru dan pemberdaya pengrajin Bugis",
         "url": "{{ url()->current() }}",
         "foundingLocation": "Bone, Sulawesi Selatan",
-        "specialty": "Songkok Recca handmade berkualitas tinggi",
+        "specialty": "Songkok Guru handmade berkualitas tinggi",
         "mission": "Melestarikan mahakarya budaya dan memberdayakan komunitas pengrajin"
     }
     </script>
@@ -64,7 +64,7 @@
                 <div class="relative group">
                     <div class="aspect-w-4 aspect-h-3 relative overflow-hidden rounded-3xl shadow-2xl">
                         <img src="{{ asset('storage/images/mitrakanatojeng1.jpg') }}" 
-                             alt="Pengrajin ahli Songkok Recca Kana Tojong sedang menganyam dengan penuh dedikasi" 
+                             alt="Pengrajin ahli Songkok Guru Kana Tojong sedang menganyam dengan penuh dedikasi" 
                              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                         <!-- Gradient overlay -->
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
@@ -72,7 +72,7 @@
                     <!-- Floating badge -->
                     <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-amber-600">25+</div>
+                            <div class="text-3xl font-bold text-amber-600">15+</div>
                             <div class="text-sm text-gray-600 font-medium">Tahun Pengalaman</div>
                         </div>
                     </div>
@@ -98,19 +98,18 @@
                     <div class="space-y-6 text-lg text-gray-700 leading-relaxed">
                         <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-amber-600 first-letter:float-left first-letter:mr-2 first-letter:mt-1">
                             Kana Tojong lahir dari sebuah mimpi sederhana: untuk membawa keagungan 
-                            <strong class="text-amber-700 font-semibold">Songkok Recca</strong> ke panggung dunia, 
+                            <strong class="text-amber-700 font-semibold">Songkok Guru</strong> ke panggung dunia, 
                             sekaligus menyejahterakan para pengrajin yang mendedikasikan hidupnya untuk seni ini.
                         </p>
                         
                         <p>
-                            Kami bukan hanya penjual; kami adalah <em class="text-amber-700 font-medium">jembatan antara Anda</em> 
-                            dan para maestro di desa-desa pengrajin di Bone, Sulawesi Selatan.
+                            Kami adalah <em class="text-amber-700 font-medium">jembatan antara Anda</em> 
+                            dan para seniman di desa-desa pengrajin di Kab. Takalar, Sulawesi Selatan.
                         </p>
                         
                         <div class="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-xl">
                             <p class="text-amber-800 font-medium italic">
-                                "Setiap pembelian Anda adalah dukungan langsung bagi para ibu dan bapak pengrajin, 
-                                memastikan api tradisi ini terus menyala untuk generasi yang akan datang."
+                                "Songkok Guru Takalar bukan sekadar penutup kepala, tetapi mahkota warisan yang menyimpan cerita ratusan tangan terampil."
                             </p>
                         </div>
                     </div>
@@ -118,11 +117,11 @@
                     <!-- Stats -->
                     <div class="grid grid-cols-2 gap-8 pt-8 border-t border-gray-200">
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-amber-600">500+</div>
+                            <div class="text-3xl font-bold text-amber-600">50+</div>
                             <div class="text-sm text-gray-600 font-medium">Pengrajin Bermitra</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-amber-600">10K+</div>
+                            <div class="text-3xl font-bold text-amber-600">ratusan+</div>
                             <div class="text-sm text-gray-600 font-medium">Produk Terjual</div>
                         </div>
                     </div>
@@ -149,7 +148,7 @@
                 </h2>
                 
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    Sebuah Songkok Recca bukanlah produk masal. Ia adalah hasil dari proses yang memakan waktu, 
+                    Sebuah Songkok Guru bukanlah produk masal. Ia adalah hasil dari proses yang memakan waktu, 
                     membutuhkan <strong class="text-gray-800">ketelitian, kesabaran, dan doa.</strong>
                 </p>
             </div>
@@ -231,7 +230,7 @@
             <div class="mt-20 text-center">
                 <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-100 to-yellow-100 px-6 py-3 rounded-full border border-amber-200">
                     <span class="text-2xl">🏆</span>
-                    <span class="text-amber-800 font-semibold">Jaminan Kualitas Premium & Garansi Seumur Hidup</span>
+                    <span class="text-amber-800 font-semibold">Dijaminan Kualitas dan Bahan Premium</span>
                 </div>
             </div>
         </div>
@@ -257,7 +256,7 @@
                     </h2>
                     
                     <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                        Setiap Songkok Recca adalah investasi dalam 
+                        Setiap Songkok Guru adalah investasi dalam 
                         <span class="text-amber-400 font-semibold">seni, budaya, dan komunitas.</span> 
                         Temukan songkok yang akan menceritakan kisah Anda.
                     </p>
@@ -284,7 +283,6 @@
                             <span class="text-gray-300 text-sm ml-2">4.9/5 Rating</span>
                         </div>
                         <div class="text-gray-300 text-sm">1000+ Review</div>
-                        <div class="text-gray-300 text-sm">Pengiriman Gratis</div>
                     </div>
                 </div>
             </div>

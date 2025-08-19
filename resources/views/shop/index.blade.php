@@ -1,12 +1,12 @@
 <x-app-layout>
-    <x-slot name="title">Koleksi Produk Songkok Recca Premium | Shop</x-slot>
+    <x-slot name="title">Koleksi Produk Songkok Guru Premium | Shop</x-slot>
     
     <!-- SEO Meta Tags -->
     <x-slot name="head">
-        <meta name="description" content="Jelajahi koleksi lengkap Songkok Recca premium dengan kualitas terbaik. Dari yang klasik hingga eksklusif, temukan songkok pilihan Anda.">
-        <meta name="keywords" content="songkok recca, songkok premium, songkok tradisional, songkok klasik, songkok eksklusif, topi tradisional">
-        <meta property="og:title" content="Koleksi Produk Songkok Recca Premium">
-        <meta property="og:description" content="Jelajahi semua koleksi Songkok Recca, dari yang klasik hingga yang paling eksklusif dengan kualitas premium.">
+        <meta name="description" content="Jelajahi koleksi lengkap Songkok Guru premium dengan kualitas terbaik. Dari yang klasik hingga eksklusif, temukan songkok pilihan Anda.">
+        <meta name="keywords" content="songkok Guru, songkok premium, songkok tradisional, songkok klasik, songkok eksklusif, topi tradisional">
+        <meta property="og:title" content="Koleksi Produk Songkok Guru Premium">
+        <meta property="og:description" content="Jelajahi semua koleksi Songkok Guru, dari yang klasik hingga yang paling eksklusif dengan kualitas premium.">
         <meta property="og:type" content="website">
         <link rel="canonical" href="{{ route('shop.index') }}">
     </x-slot>

@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="title">Songkok Guru Takalar Premium - Warisan Budaya Bugis | Kana Tojong</x-slot>
-    <x-slot name="metaDescription">Temukan koleksi Songkok Guru Takalar dan Songkok Recca asli Bugis berkualitas premium. Kerajinan tangan tradisional dengan nilai budaya tinggi, dibuat oleh pengrajin ahli di Sulawesi Selatan.</x-slot>
+    <x-slot name="metaDescription">Temukan koleksi Songkok Guru Takalar dan Songkok Guru asli Bugis berkualitas premium. Kerajinan tangan tradisional dengan nilai budaya tinggi, dibuat oleh pengrajin ahli di Sulawesi Selatan.</x-slot>
 
     <!-- Enhanced SEO Meta Tags -->
     <x-slot name="head">
-        <meta name="keywords" content="songkok takalar, songkok recca, songkok bugis, kerajinan tangan sulawesi, budaya bugis, songkok tradisional, songkok premium">
+        <meta name="keywords" content="songkok takalar, songkok Guru, songkok bugis, kerajinan tangan sulawesi, budaya bugis, songkok tradisional, songkok premium">
         <meta property="og:title" content="Songkok Guru Takalar Premium - Warisan Budaya Bugis | Kana Tojeng">
         <meta property="og:description" content="Koleksi songkok tradisional Bugis berkualitas premium. Kerajinan tangan asli dari Takalar, Sulawesi Selatan.">
         <meta property="og:image" content="{{ asset('storage/images/Background_home.png') }}">
