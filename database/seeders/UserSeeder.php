@@ -13,9 +13,9 @@ class UserSeeder extends Seeder
         // Membuat Admin
         User::create([
             'name' => 'Admin Kana Tojong',
-            'email' => 'admin@kanatojong.com',
-            'password' => Hash::make('password'), // ganti dengan password yang aman
-            'phone_number' => '089518804219',
+            'email' => 'admin@kanatojeng.com',
+            'password' => Hash::make('kanatojong2025'), // ganti dengan password yang aman
+            'phone_number' => '6285146478100',
             'role' => 'admin',
         ]);
 

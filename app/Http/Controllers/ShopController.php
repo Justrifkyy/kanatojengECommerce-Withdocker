@@ -14,16 +14,14 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-        // 2. Gunakan Cache::remember untuk mengambil daftar kategori
         $categories = Cache::remember('all_categories', now()->addHours(6), function () {
-            // Blok kode ini hanya akan dijalankan jika 'all_categories' tidak ada di cache.
-            // Setelah dijalankan, hasilnya akan disimpan di cache selama 6 jam.
             return ProductCategory::orderBy('name', 'asc')->get();
         });
 
-        // ... sisa logika untuk query produk tidak berubah ...
-        $productsQuery = Product::with('category');
+        // FIX: Menambahkan with(['category', 'media']) untuk Eager Loading
+        $productsQuery = Product::with(['category', 'media']);
 
+        // ... sisa logika filter dan sort tidak berubah ...
         if ($request->filled('category')) {
             $productsQuery->where('category_id', $request->category);
         }

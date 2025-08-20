@@ -156,8 +156,10 @@
                 </div>
             @endif
 
-            <!-- Pagination -->
-            @if($products->count() > 0)
+            <!-- =================================================================
+            BAGIAN PAGINASI (YANG DIPERBAIKI)
+            ================================================================== -->
+            @if($products->hasPages()) {{-- Hanya tampilkan jika ada lebih dari 1 halaman --}}
                 <div class="mt-16 flex justify-center animate-fade-in-up">
                     <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-2 border border-slate-200/50">
                         {{ $products->links() }}
