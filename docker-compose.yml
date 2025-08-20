@@ -1,20 +1,17 @@
-version: '3.8'
-
 services:
   # Layanan Aplikasi (PHP/Laravel)
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: kanatojong_app
+    container_name: kanatojeng_app
     restart: unless-stopped
     volumes:
-      - .:/var/www/kanatojong
-      # FIX: Tambahkan baris ini untuk mengisolasi node_modules
-      - /var/www/kanatojong/node_modules
+      - .:/var/www/kanatojeng
+      - /var/www/kanatojeng/node_modules
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
     networks:
-      - kanatojong_network
+      - kanatojeng_network
     depends_on:
       db:
         condition: service_healthy
@@ -22,22 +19,22 @@ services:
   # Layanan Web Server (Nginx)
   nginx:
     image: nginx:alpine
-    container_name: kanatojong_nginx
+    container_name: kanatojeng_nginx
     restart: unless-stopped
     ports:
       - "8000:80"
     volumes:
-      - .:/var/www/kanatojong
+      - .:/var/www/kanatojeng
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
     networks:
-      - kanatojong_network
+      - kanatojeng_network
 
   # Layanan Database (MySQL)
   db:
     image: mysql:8.0
-    container_name: kanatojong_db
+    container_name: kanatojeng_db
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -45,25 +42,22 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - kanatojong_db_data:/var/lib/mysql
+      - kanatojeng_db_data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/custom.cnf
     ports:
       - "33061:3306"
     networks:
-      - kanatojong_network
-    # FIX: Menambahkan healthcheck untuk memeriksa status MySQL
+      - kanatojeng_network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USERNAME}", "-p${DB_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-# Jaringan untuk komunikasi antar container
 networks:
-  kanatojong_network:
+  kanatojeng_network:
     driver: bridge
 
-# Volume untuk menyimpan data database secara permanen
 volumes:
-  kanatojong_db_data:
+  kanatojeng_db_data:
     driver: local
