@@ -61,7 +61,7 @@ class CheckoutController extends Controller
         });
 
         // 5. Format pesan untuk WhatsApp
-        $message = "Halo Kana Tojong, saya ingin memesan:\n\n";
+        $message = "Halo Kana Tojeng, saya ingin memesan:\n\n";
         $message .= "*Nama Pemesan:* " . $user->name . "\n";
         $message .= "*Email:* " . $user->email . "\n\n";
         $message .= "*Detail Pesanan:*\n";
