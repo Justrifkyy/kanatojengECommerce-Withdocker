@@ -125,7 +125,7 @@ Setelah instalasi berhasil, Anda bisa login menggunakan akun default yang dibuat
 
 | Peran | Email | Password |
 | :--- | :--- | :--- |
-| **Admin** | `admin@kanatojeng.com` | `password` |
+| **Admin** | `admin@kanatojeng.com` | `kanatojong2025` |
 | **User** | `user@gmail.com` | `password` |
 
 > **Catatan:** Anda bisa mengakses Panel Admin melalui URL `/admin` setelah login sebagai Admin.
