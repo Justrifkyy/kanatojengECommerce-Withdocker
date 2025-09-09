@@ -1,8 +1,7 @@
 <x-app-layout>
-    <x-slot name="title">{{ $product->name }} - Premium Quality Products</x-slot>
+    <x-slot name="title">{{ $product->name }} - Kana Tojeng</x-slot>
     <x-slot name="metaDescription">{{ Str::limit($product->description, 155) }} - Shop now with free shipping and premium quality guarantee.</x-slot>
     
-    <!-- Enhanced SEO Meta Tags -->
     @push('meta')
         <meta property="og:title" content="{{ $product->name }} - Premium Quality Products">
         <meta property="og:description" content="{{ Str::limit($product->description, 155) }}">
@@ -14,7 +13,6 @@
         <link rel="canonical" href="{{ url()->current() }}">
     @endpush
 
-    <!-- Modern Breadcrumb with Animation -->
     <section class="bg-gradient-to-r from-yellow-50 to-yellow-100 py-6 border-b border-yellow-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex items-center space-x-2 text-sm font-medium">
@@ -37,24 +35,29 @@
         </div>
     </section>
 
-    <!-- Main Product Content with Enhanced Design -->
     <div class="bg-white min-h-screen">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div x-data="{ 
                     selectedSize: null, 
-                    selectedColor: null,
+                    selectedColor: {{ $product->colors->isNotEmpty() ? 'null' : 'true' }},
                     selectedColorName: '',
                     quantity: 1,
                     mainMediaUrl: '{{ $product->media->first() ? asset('storage/' . $product->media->first()->file_path) : 'https://placehold.co/800x800/f3f4f6/333333?text=Produk' }}',
                     mainMediaType: '{{ $product->media->first()->media_type ?? 'image' }}',
                     isLoading: false,
                     showFullDescription: false,
+                    variants: {{ Js::from($product->sizes->mapWithKeys(function ($size) {
+                        return [$size->id => $size->pivot->stock];
+                    })) }},
+                    get currentStock() {
+                        return this.selectedSize ? this.variants[this.selectedSize] : null;
+                    },
                     addToCart() {
                         if (!this.selectedSize) {
                             $store.app.showToast('Silakan pilih ukuran terlebih dahulu.', 'error');
                             return;
                         }
-                        if ({{ $product->colors->isNotEmpty() ? 'true' : 'false' }} && !this.selectedColor) {
+                        if ({{ $product->colors->isNotEmpty() ? '!this.selectedColor' : 'false' }}) {
                             $store.app.showToast('Silakan pilih warna terlebih dahulu.', 'error');
                             return;
                         }
@@ -73,7 +76,8 @@
                         .then(response => response.json())
                         .then(data => {
                             if(data.success) {
-                                $store.app.showToast(data.message, 'success');
+                                let message = this.currentStock > 0 ? data.message : 'Produk berhasil ditambahkan untuk Pre-Order.';
+                                $store.app.showToast(message, 'success');
                                 $store.app.updateCartCount(data.cartCount);
                             } else {
                                 $store.app.showToast(data.message || 'Gagal menambahkan produk.', 'error');
@@ -89,14 +93,12 @@
                     }
                 }" 
                  class="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start"
-                 x-init="$nextTick(() => { /* Animation delay */ })">
+                 x-init="$nextTick(() => { })">
                 
-                <!-- Enhanced Media Gallery (Left Column) -->
                 <div class="flex flex-col-reverse sm:flex-row gap-6 group" 
                      x-data="{ imageLoaded: false }" 
                      @load.window="imageLoaded = true">
                     
-                    <!-- Stylized Thumbnails -->
                     <div class="flex sm:flex-col gap-3 sm:w-28">
                         @forelse ($product->media as $media)
                             <div @click="mainMediaUrl = '{{ asset('storage/' . $media->file_path) }}'; mainMediaType = '{{ $media->media_type }}'"
@@ -126,9 +128,7 @@
                         @endforelse
                     </div>
 
-                    <!-- Main Media Display with Enhanced Styling -->
                     <div class="w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-yellow-100 to-yellow-200 shadow-2xl relative group">
-                        <!-- Loading State -->
                         <div class="absolute inset-0 bg-yellow-200 animate-pulse" x-show="!imageLoaded"></div>
                         
                         <template x-if="mainMediaType === 'image'">
@@ -147,7 +147,6 @@
                             </video>
                         </template>
 
-                        <!-- Elegant Overlay for Zoom Hint -->
                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
                             <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white bg-opacity-90 rounded-full p-3 backdrop-blur-sm">
                                 <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,10 +157,8 @@
                     </div>
                 </div>
 
-                <!-- Enhanced Product Info (Right Column) -->
                 <div class="mt-12 sm:mt-0 space-y-8" x-data="{ animateIn: false }" x-init="setTimeout(() => animateIn = true, 200)">
                     
-                    <!-- Product Header with Animation -->
                     <div class="space-y-4" :class="{ 'animate-fade-in-up': animateIn }">
                         <div class="flex items-center space-x-3">
                             <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">In Stock</span>
@@ -176,7 +173,7 @@
                             <p class="text-3xl lg:text-4xl font-bold text-yellow-600">
                                 Rp{{ number_format($product->price, 0, ',', '.') }}
                             </p>
-                            <span class="text-sm text-black line-through">
+                            <span class="text-sm text-gray-500 line-through">
                                 Rp{{ number_format($product->price * 1.2, 0, ',', '.') }}
                             </span>
                             <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded">
@@ -185,9 +182,8 @@
                         </div>
                     </div>
                     
-                    <!-- Enhanced Description -->
                     <div class="prose prose-gray max-w-none" :class="{ 'animate-fade-in-up delay-100': animateIn }">
-                        <p class="text-lg text-black leading-relaxed">
+                        <p class="text-lg text-gray-700 leading-relaxed">
                             <span x-show="!showFullDescription">
                                 {{ Str::limit($product->description, 150) }}
                                 @if(strlen($product->description) > 150)
@@ -209,12 +205,10 @@
                         </p>
                     </div>
 
-                    <!-- Modern Form -->
                     <form @submit.prevent="addToCart()" x-ref="cartForm" class="space-y-8" :class="{ 'animate-fade-in-up delay-200': animateIn }">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                        <!-- Enhanced Size Selection -->
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-semibold text-gray-900">Size</h3>
@@ -226,7 +220,7 @@
                                         <label @click="selectedSize = {{ $size->id }}"
                                                :class="{ 
                                                    'bg-yellow-600 text-white ring-2 ring-yellow-600 transform scale-105 shadow-md': selectedSize == {{ $size->id }}, 
-                                                   'bg-white text-yellow-900 border-2 border-yellow-300 hover:border-yellow-400 hover:shadow-sm': selectedSize != {{ $size->id }} 
+                                                   'bg-white text-gray-900 border-2 border-yellow-300 hover:border-yellow-400 hover:shadow-sm': selectedSize != {{ $size->id }} 
                                                }"
                                                class="min-w-[3rem] h-12 px-4 flex items-center justify-center rounded-lg cursor-pointer font-semibold transition-all duration-200 hover:transform hover:scale-105">
                                             <input type="radio" name="size_id" value="{{ $size->id }}" class="sr-only" x-model.number="selectedSize">
@@ -239,11 +233,10 @@
                             </fieldset>
                         </div>
                         
-                        <!-- Enhanced Color Selection -->
                         @if($product->colors->isNotEmpty())
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-semibold text-yellow-900">Color</h3>
+                                <h3 class="text-lg font-semibold text-gray-900">Color</h3>
                                 <p x-show="selectedColor" 
                                    x-text="selectedColorName" 
                                    class="text-sm font-medium text-yellow-600 capitalize transition-all duration-300"
@@ -265,7 +258,7 @@
                                                       class="h-10 w-10 border-2 border-white shadow-lg rounded-full block"
                                                       title="{{ $color->name }}">
                                                 </span>
-                                                <span class="absolute inset-0 rounded-full border border-yellow border-opacity-10"></span>
+                                                <span class="absolute inset-0 rounded-full border border-black border-opacity-10"></span>
                                             </div>
                                         </label>
                                     @endforeach
@@ -274,10 +267,17 @@
                         </div>
                         @endif
                         
-                        <!-- Modern Quantity and Cart Actions -->
+                        <div x-show="selectedSize" class="space-y-4" x-transition>
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold text-gray-900">Availability</h3>
+                                <p x-text="currentStock > 0 ? 'Stock Available (' + currentStock + ')' : 'Out of Stock (Pre-Order)'" 
+                                   :class="currentStock > 0 ? 'text-green-600' : 'text-amber-600'" 
+                                   class="font-bold text-sm"></p>
+                            </div>
+                        </div>
+                        
                         <div class="space-y-6">
                             <div class="flex items-center space-x-6">
-                                <!-- Stylized Quantity Counter -->
                                 <div class="flex items-center">
                                     <label class="text-sm font-medium text-gray-900 mr-4">Quantity</label>
                                     <div class="flex items-center border-2 border-yellow-300 rounded-xl overflow-hidden hover:border-yellow-400 transition-colors">
@@ -287,7 +287,7 @@
                                             −
                                         </button>
                                         <span x-text="quantity" 
-                                              class="w-16 text-center border-l-2 border-r-2 border-yellow-300 py-3 font-bold text-yellow-900 bg-yellow-50">
+                                              class="w-16 text-center border-l-2 border-r-2 border-yellow-300 py-3 font-bold text-gray-900 bg-yellow-50">
                                         </span>
                                         <button type="button" 
                                                 @click="quantity++" 
@@ -298,7 +298,6 @@
                                 </div>
                             </div>
 
-                            <!-- Enhanced Add to Cart Button -->
                             <button type="submit"
                                     :disabled="!selectedSize || ({{ $product->colors->isNotEmpty() ? '!selectedColor' : 'false' }}) || isLoading"
                                     :class="{ 
@@ -306,40 +305,31 @@
                                         'hover:bg-yellow-700 hover:shadow-lg transform hover:scale-[1.02]': selectedSize && ({{ $product->colors->isNotEmpty() ? 'selectedColor' : 'true' }}) && !isLoading
                                     }"
                                     class="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg border-0">
-                                
-                                <span x-show="!isLoading" class="flex items-center space-x-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l1.5-6M17 13l1.5 6M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm10 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path>
-                                    </svg>
-                                    <span>Add To Cart</span>
-                                </span>
-                                
-                                <span x-show="isLoading" class="flex items-center space-x-3">
+                                <span x-show="!isLoading" x-text="currentStock > 0 ? 'Add To Cart' : 'Pre-Order (PO)'"></span>
+                                <span x-show="isLoading">
                                     <svg class="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    <span>Adding...</span>
                                 </span>
                             </button>
 
-                            <!-- Trust Badges -->
                             <div class="grid grid-cols-3 gap-4 pt-6 border-t border-yellow-200">
                                 <div class="text-center">
                                     <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     </div>
-                                    <p class="text-xs font-medium text-yellow-700">Quality Guarantee</p>
+                                    <p class="text-xs font-medium text-gray-700">Quality Guarantee</p>
                                 </div>
                                 <div class="text-center">
                                     <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
-                                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
                                         </svg>
                                     </div>
-                                    <p class="text-xs font-medium text-yellow-700">Free Returns</p>
+                                    <p class="text-xs font-medium text-gray-700">Free Returns</p>
                                 </div>
                                 <div class="text-center">
                                     <div class="bg-yellow-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">

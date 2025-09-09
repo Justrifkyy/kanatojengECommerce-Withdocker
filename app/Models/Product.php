@@ -18,10 +18,10 @@ class Product extends Model
         'category_id',
         'name',
         'description',
+        'price',
+        'is_featured',
         'material',
         'finishing',
-        'price',
-        'is_featured', // <-- FIX: Tambahkan 'is_featured' di sini
     ];
 
     /**
@@ -30,19 +30,12 @@ class Product extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'is_featured' => 'boolean', // <-- Tambahan: Pastikan nilainya selalu boolean (true/false)
+        'is_featured' => 'boolean',
     ];
-
-    // ... relasi lainnya (category, sizes, media, colors) ...
 
     public function category()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
-    }
-
-    public function sizes()
-    {
-        return $this->belongsToMany(Size::class, 'product_variants');
     }
 
     public function media()
@@ -50,8 +43,20 @@ class Product extends Model
         return $this->hasMany(ProductMedia::class);
     }
 
+    public function sizes()
+    {
+        // PENTING: Menambahkan withPivot('stock') agar kita bisa mengambil data stok
+        return $this->belongsToMany(Size::class, 'product_variants')->withPivot('stock');
+    }
+    
+    // Penambahan relasi ini membantu di Panel Admin
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+
     public function colors()
     {
-        return $this->belongsToMany(Color::class);
+        return $this->belongsToMany(Color::class, 'color_product');
     }
 }

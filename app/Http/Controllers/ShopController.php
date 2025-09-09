@@ -14,18 +14,20 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
+        // Mengambil kategori dari cache untuk performa
         $categories = Cache::remember('all_categories', now()->addHours(6), function () {
             return ProductCategory::orderBy('name', 'asc')->get();
         });
 
-        // FIX: Menambahkan with(['category', 'media']) untuk Eager Loading
+        // Eager load relasi untuk optimasi (mencegah N+1 query problem)
         $productsQuery = Product::with(['category', 'media']);
 
-        // ... sisa logika filter dan sort tidak berubah ...
+        // Filter berdasarkan kategori
         if ($request->filled('category')) {
             $productsQuery->where('category_id', $request->category);
         }
 
+        // Urutkan produk
         if ($request->filled('sort')) {
             if ($request->sort == 'price_asc') {
                 $productsQuery->orderBy('price', 'asc');
@@ -33,10 +35,11 @@ class ShopController extends Controller
                 $productsQuery->orderBy('price', 'desc');
             }
         } else {
-            $productsQuery->latest();
+            $productsQuery->latest(); // Default: urutkan berdasarkan yang terbaru
         }
 
-        $products = $productsQuery->paginate(9)->withQueryString();
+        // Ambil produk dengan paginasi
+        $products = $productsQuery->paginate(8)->withQueryString();
 
         return view('shop.index', [
             'products' => $products,
@@ -46,11 +49,11 @@ class ShopController extends Controller
 
     /**
      * Menampilkan halaman detail untuk satu produk.
-     * (Method ini tidak berubah)
      */
     public function show(Product $product)
     {
-        // Memuat semua relasi yang dibutuhkan: kategori, ukuran, media, dan WARNA
+        // Memuat semua relasi yang dibutuhkan dengan cara yang benar
+        // 'sizes' akan otomatis membawa data 'stock' dari tabel pivot
         $product->load('category', 'sizes', 'media', 'colors');
 
         return view('shop.show', [
