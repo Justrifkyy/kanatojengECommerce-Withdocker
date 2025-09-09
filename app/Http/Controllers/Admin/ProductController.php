@@ -15,29 +15,20 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    /**
-     * Menampilkan daftar semua produk.
-     */
     public function index()
     {
         $products = Product::with(['category', 'media'])->latest()->paginate(10);
         return view('admin.products.index', compact('products'));
     }
 
-    /**
-     * Menampilkan form untuk membuat produk baru.
-     */
     public function create()
     {
-        $categories = ProductCategory::orderBy('name')->get();
+        $categories = ProductCategory::all();
         $sizes = Size::all();
-        $colors = Color::orderBy('name')->get();
+        $colors = Color::all();
         return view('admin.products.create', compact('categories', 'sizes', 'colors'));
     }
 
-    /**
-     * Menyimpan produk baru ke database.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -45,26 +36,31 @@ class ProductController extends Controller
             'category_id' => 'required|exists:product_categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'material' => 'nullable|string|max:255',
-            'finishing' => 'nullable|string|max:255',
+            'is_featured' => 'nullable|boolean',
             'sizes' => 'required|array|min:1',
             'sizes.*' => 'exists:sizes,id',
+            'stocks' => 'nullable|array', // Validasi untuk stok
+            'stocks.*' => 'nullable|integer|min:0', // Setiap stok harus integer >= 0
             'colors' => 'nullable|array',
             'colors.*' => 'exists:colors,id',
             'media_files' => 'nullable|array',
             'media_files.*' => 'file|mimes:jpg,jpeg,png,webp,mp4,mov,avi|max:20480',
-            'is_featured' => 'nullable', // Hapus aturan 'boolean' untuk sementara
         ]);
 
-        // FIX: Menangani nilai boolean dari checkbox secara manual
         $validated['is_featured'] = $request->has('is_featured');
 
         DB::transaction(function () use ($validated, $request) {
             $product = Product::create($validated);
-            $product->sizes()->attach($validated['sizes']);
+
+            // Siapkan data untuk tabel pivot product_variants
+            $variantsData = [];
+            foreach ($validated['sizes'] as $sizeId) {
+                $variantsData[$sizeId] = ['stock' => $validated['stocks'][$sizeId] ?? 0];
+            }
+            $product->sizes()->sync($variantsData);
 
             if (!empty($validated['colors'])) {
-                $product->colors()->attach($validated['colors']);
+                $product->colors()->sync($validated['colors']);
             }
 
             if ($request->hasFile('media_files')) {
@@ -82,24 +78,18 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
-    /**
-     * Menampilkan form untuk mengedit produk yang sudah ada.
-     */
     public function edit(Product $product)
     {
-        $product->load('media', 'colors', 'sizes');
-        $categories = ProductCategory::orderBy('name')->get();
+        $product->load('media', 'colors', 'variants');
+        $categories = ProductCategory::all();
         $sizes = Size::all();
-        $colors = Color::orderBy('name')->get();
+        $colors = Color::all();
         $productSizeIds = $product->sizes->pluck('id')->toArray();
         $productColorIds = $product->colors->pluck('id')->toArray();
 
         return view('admin.products.edit', compact('product', 'categories', 'sizes', 'colors', 'productSizeIds', 'productColorIds'));
     }
 
-    /**
-     * Memperbarui produk yang sudah ada di database.
-     */
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
@@ -107,23 +97,28 @@ class ProductController extends Controller
             'category_id' => 'required|exists:product_categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'material' => 'nullable|string|max:255',
-            'finishing' => 'nullable|string|max:255',
+            'is_featured' => 'nullable|boolean',
             'sizes' => 'required|array|min:1',
             'sizes.*' => 'exists:sizes,id',
+            'stocks' => 'nullable|array',
+            'stocks.*' => 'nullable|integer|min:0',
             'colors' => 'nullable|array',
             'colors.*' => 'exists:colors,id',
             'media_files' => 'nullable|array',
             'media_files.*' => 'file|mimes:jpg,jpeg,png,webp,mp4,mov,avi|max:20480',
-            'is_featured' => 'nullable', // Hapus aturan 'boolean' untuk sementara
         ]);
 
-        // FIX: Menangani nilai boolean dari checkbox secara manual
         $validated['is_featured'] = $request->has('is_featured');
 
         DB::transaction(function () use ($product, $validated, $request) {
             $product->update($validated);
-            $product->sizes()->sync($validated['sizes'] ?? []);
+
+            $variantsData = [];
+            foreach ($validated['sizes'] as $sizeId) {
+                $variantsData[$sizeId] = ['stock' => $validated['stocks'][$sizeId] ?? 0];
+            }
+            $product->sizes()->sync($variantsData);
+
             $product->colors()->sync($validated['colors'] ?? []);
 
             if ($request->hasFile('media_files')) {
@@ -141,37 +136,19 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus produk dari database.
-     */
     public function destroy(Product $product)
     {
         foreach ($product->media as $media) {
             Storage::disk('public')->delete($media->file_path);
         }
-
         $product->delete();
-
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus.');
     }
 
-    /**
-     * Menghapus satu file media dari produk.
-     */
-    public function destroyMedia(Request $request, ProductMedia $media)
+    public function destroyMedia(ProductMedia $media)
     {
-        // Hapus file dari storage
         Storage::disk('public')->delete($media->file_path);
-
-        // Hapus record dari database
         $media->delete();
-
-        // Jika ini adalah request AJAX, kirim respons JSON
-        if ($request->expectsJson()) {
-            return response()->json(['success' => true, 'message' => 'File media berhasil dihapus.']);
-        }
-
-        // Fallback untuk non-AJAX
-        return back()->with('success', 'File media berhasil dihapus.');
+        return response()->json(['success' => true, 'message' => 'File media berhasil dihapus.']);
     }
 }

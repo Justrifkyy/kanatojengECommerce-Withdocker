@@ -1,4 +1,3 @@
-{{-- SEO Meta Tags --}}
 @push('meta')
 <meta name="description" content="Kelola produk dengan mudah - tambah, edit, dan atur galeri media produk Anda dengan interface yang modern dan user-friendly">
 <meta name="keywords" content="produk, manajemen produk, ecommerce, admin panel">
@@ -8,7 +7,6 @@
 <meta property="og:type" content="website">
 @endpush
 
-{{-- Custom CSS untuk animasi dan transisi smooth --}}
 @push('styles')
 <style>
     @keyframes slideInUp {
@@ -91,10 +89,8 @@
 </style>
 @endpush
 
-{{-- Container utama dengan gradient background --}}
 <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
-        {{-- Header Section --}}
         <div class="text-center mb-12 animate-fade-in">
             <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
                 {{ isset($product) ? 'Edit Produk' : 'Tambah Produk Baru' }}
@@ -104,7 +100,6 @@
             </p>
         </div>
 
-        {{-- Error Messages dengan animasi --}}
         @if ($errors->any())
             <div class="mb-8 animate-slide-in-up">
                 <div class="bg-red-50 border-l-4 border-red-400 p-6 rounded-r-xl shadow-lg">
@@ -128,13 +123,8 @@
             </div>
         @endif
 
-        {{-- Main Content Grid --}}
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            {{-- =================================================================
-            KOLOM KIRI (Informasi Utama)
-            ================================================================== --}}
             <div class="xl:col-span-2 space-y-8">
-                {{-- Kartu Informasi Dasar --}}
                 <div class="gradient-border animate-slide-in-up" style="animation-delay: 0.1s;">
                     <div class="p-8">
                         <div class="flex items-center mb-6">
@@ -194,7 +184,6 @@
                     </div>
                 </div>
 
-                {{-- Kartu Galeri Media --}}
                 <div class="gradient-border animate-slide-in-up" style="animation-delay: 0.2s;">
                     <div class="p-8">
                         <div class="flex items-center mb-6">
@@ -262,13 +251,45 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="gradient-border animate-slide-in-up" style="animation-delay: 0.25s;">
+                    <div class="p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Ukuran & Stok</h3>
+                        </div>
+                        
+                        <div class="space-y-4 p-6 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl">
+                            @foreach ($sizes as $size)
+                                @php
+                                    $variant = isset($product) ? $product->variants->firstWhere('size_id', $size->id) : null;
+                                    $stock = old('stocks.'.$size->id, $variant->pivot->stock ?? 0);
+                                @endphp
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="sizes[]" value="{{ $size->id }}" 
+                                               class="w-5 h-5 rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                               @if(in_array($size->id, old('sizes', $productSizeIds ?? []))) checked @endif>
+                                        <span class="ml-3 text-sm font-semibold text-gray-700">Ukuran {{ $size->size_number }}</span>
+                                    </label>
+                                    <div class="flex items-center">
+                                        <label for="stock-{{ $size->id }}" class="text-sm text-gray-500 mr-3">Stok:</label>
+                                        <input type="number" name="stocks[{{ $size->id }}]" id="stock-{{ $size->id }}" 
+                                               value="{{ $stock }}" min="0" 
+                                               class="w-20 text-sm px-3 py-2 rounded-lg shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200">
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            {{-- =================================================================
-            KOLOM KANAN (Atribut & Aksi)
-            ================================================================== --}}
             <div class="xl:col-span-1 space-y-8">
-                {{-- Kartu Status Produk --}}
                 <div class="gradient-border animate-slide-in-up" style="animation-delay: 0.3s;">
                     <div class="p-6">
                         <div class="flex items-center mb-4">
@@ -283,7 +304,7 @@
                         <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-xl">
                             <div class="flex items-start">
                                 <div class="flex items-center h-5 mt-1">
-                                    <input id="is_featured" name="is_featured" type="checkbox" 
+                                    <input id="is_featured" name="is_featured" type="checkbox" value="1"
                                            @checked(old('is_featured', $product->is_featured ?? false))
                                            class="w-5 h-5 text-indigo-600 border-2 border-gray-300 rounded-lg focus:ring-indigo-500 focus:ring-2 transition-all duration-300">
                                 </div>
@@ -300,7 +321,6 @@
                     </div>
                 </div>
 
-                {{-- Kartu Detail & Varian --}}
                 <div class="gradient-border animate-slide-in-up" style="animation-delay: 0.4s;">
                     <div class="p-6">
                         <div class="flex items-center mb-6">
@@ -309,62 +329,25 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
                                 </svg>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-800">Detail & Varian</h3>
+                            <h3 class="text-xl font-bold text-gray-800">Pilihan Warna</h3>
                         </div>
                         
-                        <div class="space-y-6">
-                            <div class="group">
-                                <label for="material" class="block text-sm font-semibold text-gray-700 mb-2">Nama Produk</label>
-                                <input id="material" type="text" name="material" value="{{ old('material', $product->material ?? '') }}" 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
-                                       placeholder="Contoh: Songkok Guru">
-                            </div>
-
-                            <div class="group">
-                                <label for="finishing" class="block text-sm font-semibold text-gray-700 mb-2">Bahan Produk</label>
-                                <input id="finishing" type="text" name="finishing" value="{{ old('finishing', $product->finishing ?? '') }}" 
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
-                                       placeholder="Contoh: Songkok Guru Tembaga">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-3">Ukuran yang Tersedia</label>
-                                <div class="grid grid-cols-3 gap-3">
-                                    @foreach ($sizes as $size)
-                                        <label class="relative">
-                                            <input type="checkbox" name="sizes[]" value="{{ $size->id }}" 
-                                                   class="sr-only peer"
-                                                   @if(isset($productSizeIds) && in_array($size->id, $productSizeIds)) checked @endif
-                                                   @if(is_array(old('sizes')) && in_array($size->id, old('sizes'))) checked @endif>
-                                            <div class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-center font-semibold text-sm cursor-pointer transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 hover:border-gray-400">
-                                                {{ $size->size_number }}
-                                            </div>
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-3">Pilihan Warna</label>
-                                <div class="grid grid-cols-2 gap-3">
-                                    @foreach ($colors as $color)
-                                        <label class="relative">
-                                            <input type="checkbox" name="colors[]" value="{{ $color->id }}" 
-                                                   class="sr-only peer"
-                                                   @if(isset($productColorIds) && in_array($color->id, $productColorIds)) checked @endif
-                                                   @if(is_array(old('colors')) && in_array($color->id, old('colors'))) checked @endif>
-                                            <div class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-center font-medium text-sm cursor-pointer transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 hover:border-gray-400">
-                                                {{ $color->name }}
-                                            </div>
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
+                        <div class="grid grid-cols-2 gap-3 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl">
+                            @foreach ($colors as $color)
+                                <label class="relative">
+                                    <input type="checkbox" name="colors[]" value="{{ $color->id }}" 
+                                           class="sr-only peer"
+                                           @if(isset($productColorIds) && in_array($color->id, $productColorIds)) checked @endif
+                                           @if(is_array(old('colors')) && in_array($color->id, old('colors'))) checked @endif>
+                                    <div class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-center font-medium text-sm cursor-pointer transition-all duration-300 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 hover:border-gray-400 bg-white">
+                                        {{ $color->name }}
+                                    </div>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
                 </div>
                 
-                {{-- Kartu Aksi --}}
                 <div class="gradient-border animate-slide-in-up" style="animation-delay: 0.5s;">
                     <div class="p-6">
                         <div class="flex items-center mb-6">
@@ -400,11 +383,9 @@
     </div>
 </div>
 
-{{-- JavaScript untuk interaksi tambahan --}}
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Animasi smooth untuk form elements
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
@@ -416,13 +397,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Preview file upload
     const fileInput = document.getElementById('media_files');
     if (fileInput) {
         fileInput.addEventListener('change', function(e) {
             const files = e.target.files;
             if (files.length > 0) {
-                // Tambahkan feedback visual
                 const parent = this.closest('.group');
                 parent.querySelector('p').innerHTML = `
                     <svg class="w-4 h-4 mr-1 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -435,5 +414,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function deleteMedia(mediaId, event) {
+    if (confirm('Apakah Anda yakin ingin menghapus media ini?')) {
+        event.target.closest('.media-item').style.opacity = '0.5';
+        event.target.closest('.media-item').style.pointerEvents = 'none';
+    }
+}
 </script>
 @endpush
